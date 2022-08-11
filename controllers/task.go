@@ -8,15 +8,15 @@ import (
 )
 
 type TaskRequest struct {
-	Task     string
-	Assignor string
-	Dateline string
+	Task     string `json:"task" binding:"required"`
+	Assignor string `json:"assignor" binding:"required"`
+	Dateline string `json:"dateline" binding:"required, datetime"`
 }
 
 // create
 func NewTask(c *gin.Context) {
-	var data TaskRequest
 
+	var data TaskRequest
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -65,7 +65,7 @@ func UpdateTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  true,
-		"message": fmt.Sprint("Update task id ", id),
+		"message": fmt.Sprint("update task id ", id),
 		"data":    data,
 	})
 }
