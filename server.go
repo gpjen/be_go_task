@@ -7,6 +7,27 @@ import (
 )
 
 func main() {
+
+	// dsn := "root:@tcp(127.0.0.1:3306)/go_task?charset=utf8mb4&parseTime=True&loc=Local"
+	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+
+	// db.AutoMigrate(&models.Task{})
+
+	// task := models.Task{
+	// 	Task:     "ui ux",
+	// 	Assignor: "syukran reza",
+	// 	Dateline: "2022-10-10",
+	// }
+
+	// taskRequest := models.NewRepository(db)
+
+	// data, _ := taskRequest.FindById(3)
+
+	// fmt.Println(data)
+
 	router := gin.Default()
 
 	V1 := router.Group("/v1")
