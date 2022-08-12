@@ -2,12 +2,20 @@ package main
 
 import (
 	"be_go_task/controllers"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
+
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  true,
+			"message": "root page, server oke",
+		})
+	})
 
 	V1 := router.Group("/v1")
 	V1.GET("/task", controllers.GetTask)
