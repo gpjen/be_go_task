@@ -16,5 +16,5 @@ func main() {
 	V1.PATCH("/task/:id", controllers.UpdateTask)
 	V1.DELETE("/task/:id", controllers.DeleteTask)
 
-	router.Run()
+	router.Run(":5000")
 }
