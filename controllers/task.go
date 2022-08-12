@@ -105,6 +105,12 @@ func GetTaskById(c *gin.Context) {
 			"status":  false,
 			"message": err.Error(),
 		})
+	} else if getData.Id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": fmt.Sprint("no data id ", id),
+		})
+		return
 	}
 
 	data := TaskResponse{
@@ -152,6 +158,14 @@ func UpdateTask(c *gin.Context) {
 	taskRequest := models.NewRepository(db)
 	getData, _ := taskRequest.FindById(id)
 
+	if getData.Id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": fmt.Sprint("no data id ", id),
+		})
+		return
+	}
+
 	getData.Task = dataRequest.Task
 	getData.Assignor = dataRequest.Assignor
 	getData.Dateline = dataRequest.Dateline
@@ -166,7 +180,30 @@ func UpdateTask(c *gin.Context) {
 
 // delete task
 func DeleteTask(c *gin.Context) {
-	id := c.Param("id")
+	idString := c.Param("id")
+	id, _ := strconv.Atoi(idString)
+
+	db, err := config.DbConn()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	TaskRequest := models.NewRepository(db)
+	data, _ := TaskRequest.FindById(id)
+
+	if data.Id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": fmt.Sprint("no data id ", id),
+		})
+		return
+	}
+
+	TaskRequest.Delete(data)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  true,
